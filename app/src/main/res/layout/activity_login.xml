@@ -61,17 +61,17 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="146dp"
-        android:layout_height="65dp"
+        android:layout_width="144dp"
+        android:layout_height="69dp"
         android:backgroundTint="@color/purple_500"
         android:text="@string/login_button_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.711"
+        app:layout_constraintHorizontal_bias="0.739"
         app:layout_constraintStart_toEndOf="@+id/btn_register"
         app:layout_constraintTop_toBottomOf="@+id/et_password"
-        app:layout_constraintVertical_bias="0.244" />
+        app:layout_constraintVertical_bias="0.248" />
 
     <Button
         android:id="@+id/btn_register"
@@ -80,6 +80,7 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/purple_500"
         android:text="@string/register_button_text"
+        android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.094"
