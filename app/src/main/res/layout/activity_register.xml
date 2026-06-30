@@ -18,10 +18,9 @@
         android:textColor="@color/btn_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_login"
         app:layout_constraintTop_toBottomOf="@+id/re_enter_password"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/enter_password"
@@ -66,10 +65,10 @@
         android:textColor="@color/btn_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toEndOf="@+id/btn_register"
+        app:layout_constraintHorizontal_bias="0.13"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/re_enter_password"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/register_email"
