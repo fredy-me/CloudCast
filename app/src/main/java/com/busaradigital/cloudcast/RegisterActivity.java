@@ -15,6 +15,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
         btnLogin = findViewById(R.id.btn_login);
