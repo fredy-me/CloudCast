@@ -2,6 +2,7 @@ package com.busaradigital.cloudcast;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -31,5 +32,11 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(openRegister);
         });
 
+        btnLogin = findViewById(R.id.btn_login);
+        btnLogin.setOnClickListener(v -> {
+            Intent openMain = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(openMain);
+                }
+                );
     }
 }
