@@ -18,4 +18,11 @@
     <string name="tab_weather">WEATHER</string>
     <string name="tab_history">HISTORY</string>
     <string name="desc_menu">Menu</string>
+    <string name="title_weather_history">Weather History</string>
+    <string name="label_date_time">Date&amp;Time</string>
+    <string name="btn_back">Back</string>
+    <string name="history_sunny">Sunny</string>
+    <string name="history_dar">Dar es Salaam</string>
+    <string name="history_time">20 Jun 2025 • 09:30 AM</string>
+    <string name="desc_details">Details</string>
 </resources>
