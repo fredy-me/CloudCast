@@ -8,5 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background_color">#1E1A4D</color>
+    <color name="card_background">#3C3B6E</color>
+    <color name="button_color">#5E5CE6</color>
+    <color name="tab_active">#2E2B5F</color>
+    <color name="tab_inactive">#3C3B6E</color>
+    <color name="text_secondary">#A0A0A0</color>
     <color name="btn_text_color">#FFFFFF</color>
 </resources>
