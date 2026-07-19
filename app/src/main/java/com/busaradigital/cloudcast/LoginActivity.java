@@ -3,7 +3,9 @@ package com.busaradigital.cloudcast;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,13 +17,12 @@ public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
     TextView tvGoRegister;
+    EditText etEmail, etPassword;
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
@@ -31,7 +32,12 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        userManager = new UserManager(this);
+
+        etEmail = findViewById(R.id.et_email);
+        etPassword = findViewById(R.id.et_password);
         tvGoRegister = findViewById(R.id.tv_go_register);
+        
         tvGoRegister.setOnClickListener(v -> {
             Intent openRegister = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(openRegister);
@@ -39,8 +45,21 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(v -> {
-            Intent openMain = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(openMain);
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (userManager.loginUser(email, password)) {
+                Intent openMain = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(openMain);
+                finish();
+            } else {
+                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

@@ -59,13 +59,41 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
+            <!-- Username Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_username"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:hint="@string/username_hint"
+                app:boxBackgroundColor="@color/input_bg"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="@color/divider_color"
+                app:hintTextColor="@color/hint_color"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="@color/text_secondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:minHeight="56dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/hint_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Email Input -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_email"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="16dp"
                 android:hint="@string/email_hint"
                 app:boxBackgroundColor="@color/input_bg"
                 app:boxCornerRadiusTopStart="12dp"
@@ -74,7 +102,6 @@
                 app:boxCornerRadiusBottomEnd="12dp"
                 app:boxStrokeColor="@color/divider_color"
                 app:hintTextColor="@color/hint_color"
-                app:hintEnabled="floating"
                 app:startIconDrawable="@android:drawable/sym_action_email"
                 app:startIconTint="@color/text_secondary">
 
@@ -82,7 +109,6 @@
                     android:id="@+id/register_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter your email"
                     android:inputType="textEmailAddress"
                     android:minHeight="56dp"
                     android:textColor="@color/white"
@@ -104,7 +130,6 @@
                 app:boxCornerRadiusBottomEnd="12dp"
                 app:boxStrokeColor="@color/divider_color"
                 app:hintTextColor="@color/hint_color"
-                app:hintEnabled="floating"
                 app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
                 app:startIconTint="@color/text_secondary"
                 app:endIconMode="password_toggle"
@@ -114,7 +139,6 @@
                     android:id="@+id/enter_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="******"
                     android:inputType="textPassword"
                     android:minHeight="56dp"
                     android:textColor="@color/white"
@@ -136,7 +160,6 @@
                 app:boxCornerRadiusBottomEnd="12dp"
                 app:boxStrokeColor="@color/divider_color"
                 app:hintTextColor="@color/hint_color"
-                app:hintEnabled="floating"
                 app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
                 app:startIconTint="@color/text_secondary"
                 app:endIconMode="password_toggle"
@@ -146,7 +169,6 @@
                     android:id="@+id/re_enter_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Confirm *****"
                     android:inputType="textPassword"
                     android:minHeight="56dp"
                     android:textColor="@color/white"

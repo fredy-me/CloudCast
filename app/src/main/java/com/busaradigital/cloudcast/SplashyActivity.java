@@ -26,7 +26,13 @@ public class SplashyActivity extends AppCompatActivity {
 
         // Transition to LoginActivity after 3 seconds
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(SplashyActivity.this, LoginActivity.class);
+            UserManager userManager = new UserManager(this);
+            Intent intent;
+            if (userManager.isLoggedIn()) {
+                intent = new Intent(SplashyActivity.this, MainActivity.class);
+            } else {
+                intent = new Intent(SplashyActivity.this, LoginActivity.class);
+            }
             startActivity(intent);
             finish();
         }, 3000);
