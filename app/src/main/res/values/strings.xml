@@ -30,4 +30,11 @@
     <string name="label_coordinates">Coordinates</string>
     <string name="sample_coordinates">-6.7915, 39.2158</string>
     <string name="cv_history_item">View detail</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="register_subtitle">Create your account</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="no_account_prompt">Don\'t have an account?</string>
+    <string name="has_account_prompt">Already have an account?</string>
+    <string name="login_link">Login</string>
+    <string name="register_link">Register</string>
 </resources>
