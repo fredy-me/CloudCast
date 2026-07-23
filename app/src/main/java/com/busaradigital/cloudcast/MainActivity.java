@@ -87,6 +87,15 @@ public class MainActivity extends AppCompatActivity implements LocationHelper.Lo
             startActivity(intent);
         });
 
+        findViewById(R.id.btn_refresh).setOnClickListener(v -> {
+            if (locationHelper.hasLocationPermission()) {
+                locationHelper.getCurrentLocation();
+                Toast.makeText(this, "Refreshing weather...", Toast.LENGTH_SHORT).show();
+            } else {
+                locationHelper.requestPermission();
+            }
+        });
+
         weatherApiService = new WeatherApiService();
         historyManager = new HistoryManager(this, userManager.getEmail());
         locationHelper = new LocationHelper(this, this);
