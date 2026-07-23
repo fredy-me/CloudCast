@@ -12,6 +12,7 @@ public class HistoryManager {
     private static final String KEY_HISTORY = "history_list";
     private final SharedPreferences prefs;
     private final Gson gson;
+    private final BackendApiService apiService;
 
     public HistoryManager(Context context, String userEmail) {
         String name = PREF_NAME;
@@ -20,11 +21,12 @@ public class HistoryManager {
         }
         prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE);
         gson = new Gson();
+        apiService = new BackendApiService();
     }
 
-    public void saveRecord(WeatherRecord record) {
+    public void saveRecord(WeatherRecord record, int userId) {
+        // Save locally first for offline access
         List<WeatherRecord> history = getHistory();
-        // Check if we already saved this location for this hour/day to avoid duplicates
         if (!history.isEmpty()) {
             WeatherRecord last = history.get(0);
             if (last.location.equals(record.location) && last.date.equals(record.date)) {
@@ -32,12 +34,37 @@ public class HistoryManager {
             }
         }
         
-        history.add(0, record); // Add to beginning
+        history.add(0, record);
         if (history.size() > 20) {
-            history = history.subList(0, 20); // Keep last 20
+            history = history.subList(0, 20);
         }
-        
         prefs.edit().putString(KEY_HISTORY, gson.toJson(history)).apply();
+
+        // Save to remote backend
+        if (userId != -1) {
+            apiService.saveHistory(record, userId, new BackendApiService.ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {}
+                @Override
+                public void onError(String error) {}
+            });
+        }
+    }
+
+    public void syncHistory(int userId, BackendApiService.ApiCallback<List<WeatherRecord>> callback) {
+        if (userId == -1) return;
+        apiService.getHistory(userId, new BackendApiService.ApiCallback<List<WeatherRecord>>() {
+            @Override
+            public void onSuccess(List<WeatherRecord> result) {
+                prefs.edit().putString(KEY_HISTORY, gson.toJson(result)).apply();
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
     }
 
     public List<WeatherRecord> getHistory() {

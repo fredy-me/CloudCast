@@ -47,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         btnRegister = findViewById(R.id.btn_register);
+        BackendApiService apiService = new BackendApiService();
+
         btnRegister.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String email = etEmail.getText().toString().trim();
@@ -63,12 +65,25 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            userManager.registerUser(username, email, password);
-            Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+            btnRegister.setEnabled(false);
+            btnRegister.setText("Registering...");
 
-            Intent openLogin = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(openLogin);
-            finish();
+            apiService.register(username, email, password, new BackendApiService.ApiCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    Intent openLogin = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(openLogin);
+                    finish();
+                }
+
+                @Override
+                public void onError(String error) {
+                    btnRegister.setEnabled(true);
+                    btnRegister.setText("Register");
+                    Toast.makeText(RegisterActivity.this, "Registration failed: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

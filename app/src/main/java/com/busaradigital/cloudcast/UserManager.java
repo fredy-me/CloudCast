@@ -8,6 +8,7 @@ public class UserManager {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_USER_ID = "userId";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
 
     private SharedPreferences sharedPreferences;
@@ -18,24 +19,24 @@ public class UserManager {
         editor = sharedPreferences.edit();
     }
 
-    public void registerUser(String username, String email, String password) {
+    public void registerUser(String username, String email, String password, int userId) {
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_PASSWORD, password);
+        editor.putInt(KEY_USER_ID, userId);
         editor.apply();
     }
 
-    public boolean loginUser(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) return false;
+    public void loginUser(String username, String email, int userId) {
+        editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_EMAIL, email);
+        editor.putInt(KEY_USER_ID, userId);
+        setLoggedIn(true);
+        editor.apply();
+    }
 
-        String storedEmail = sharedPreferences.getString(KEY_EMAIL, "");
-        String storedPassword = sharedPreferences.getString(KEY_PASSWORD, "");
-
-        if (email.equals(storedEmail) && password.equals(storedPassword)) {
-            setLoggedIn(true);
-            return true;
-        }
-        return false;
+    public int getUserId() {
+        return sharedPreferences.getInt(KEY_USER_ID, -1);
     }
 
     public void setLoggedIn(boolean isLoggedIn) {

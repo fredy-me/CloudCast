@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LocationHelper.Lo
     private LocationHelper locationHelper;
     private WeatherApiService weatherApiService;
     private HistoryManager historyManager;
+    private UserManager userManager;
     private TextView tvLocationValue;
     private TextView tvTemperature;
     private TextView tvFeelsLike;
@@ -73,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements LocationHelper.Lo
         tvWeatherSummary = findViewById(R.id.tv_weather_summary);
         ivWeatherIcon = findViewById(R.id.iv_weather_icon);
         llForecastContainer = findViewById(R.id.ll_forecast_container);
-        
-        UserManager userManager = new UserManager(this);
+
+        userManager = new UserManager(this);
         TextView tvWelcome = findViewById(R.id.tv_welcome);
         tvWelcome.setText(String.format("Welcome, %s!", userManager.getUsername()));
 
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements LocationHelper.Lo
                 historyManager.saveRecord(new WeatherRecord(
                         lastLocation, lastTemp, lastFeelsLike, lastDesc, 
                         lastIconUrl, lastHumidity, lastWind, lastPrecipitation, lastDate, lastLat, lastLon
-                ));
+                ), userManager.getUserId());
 
                 updateForecastUI(response.getForecast());
             }
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements LocationHelper.Lo
             historyManager.saveRecord(new WeatherRecord(
                     lastLocation, tempStr, "Avg Temp", dayData.day.condition.text,
                     finalIconUrl, forecastHumidity, forecastWind, forecastPrecip, forecastDateStr, lastLat, lastLon
-            ));
+            ), userManager.getUserId());
 
             Intent intent = new Intent(this, WeatherDetailsActivity.class);
             intent.putExtra(EXTRA_LOCATION, lastLocation);

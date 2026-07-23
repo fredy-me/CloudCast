@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnLogin = findViewById(R.id.btn_login);
+        BackendApiService apiService = new BackendApiService();
+
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -53,13 +55,25 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            if (userManager.loginUser(email, password)) {
-                Intent openMain = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(openMain);
-                finish();
-            } else {
-                Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-            }
+            btnLogin.setEnabled(false);
+            btnLogin.setText("Logging in...");
+
+            apiService.login(email, password, new BackendApiService.ApiCallback<BackendApiService.UserResponse>() {
+                @Override
+                public void onSuccess(BackendApiService.UserResponse result) {
+                    userManager.loginUser(result.username, result.email, result.id);
+                    Intent openMain = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(openMain);
+                    finish();
+                }
+
+                @Override
+                public void onError(String error) {
+                    btnLogin.setEnabled(true);
+                    btnLogin.setText("Login");
+                    Toast.makeText(LoginActivity.this, "Login failed: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

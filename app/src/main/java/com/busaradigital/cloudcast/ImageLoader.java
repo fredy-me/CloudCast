@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageLoader {
@@ -47,7 +45,7 @@ public class ImageLoader {
         try {
             return directFetch(urlStr);
         } catch (Exception e) {
-            Log.w("CloudCast", "Direct image fetch failed, trying DoH fallback");
+            Log.w("CloudCast", "Direct image fetch failed, trying DoH fallback: " + e.getMessage());
             try {
                 return dohFetch(urlStr);
             } catch (Exception e2) {
@@ -64,8 +62,11 @@ public class ImageLoader {
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            if (connection.getResponseCode() != 200) throw new Exception("HTTP " + connection.getResponseCode());
+            int code = connection.getResponseCode();
+            if (code != 200) throw new Exception("HTTP " + code);
 
             InputStream inputStream = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -77,21 +78,27 @@ public class ImageLoader {
     }
 
     private static Bitmap dohFetch(String urlStr) throws Exception {
-        String host = "cdn.weatherapi.com";
+        URL url = new URL(urlStr);
+        String host = url.getHost();
         String ip = resolveIpViaDoH(host);
         if (ip == null) throw new Exception("DoH resolution failed for " + host);
 
-        String dohUrl = urlStr.replace("https://" + host, "http://" + ip);
+        String dohUrl = urlStr.replace(host, ip);
+        // Fallback to http for IP-based requests
+        dohUrl = dohUrl.replace("https://", "http://");
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(dohUrl);
-            connection = (HttpURLConnection) url.openConnection();
+            URL finalUrl = new URL(dohUrl);
+            connection = (HttpURLConnection) finalUrl.openConnection();
             connection.setConnectTimeout(10000);
             connection.setReadTimeout(10000);
             connection.setRequestProperty("Host", host);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setInstanceFollowRedirects(true);
 
-            if (connection.getResponseCode() != 200) throw new Exception("HTTP " + connection.getResponseCode());
+            int code = connection.getResponseCode();
+            if (code != 200) throw new Exception("HTTP " + code);
 
             InputStream inputStream = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -120,7 +127,7 @@ public class ImageLoader {
             while ((line = reader.readLine()) != null) sb.append(line);
             reader.close();
 
-            Matcher matcher = Pattern.compile("\"data\":\"(\\d+\\.\\d+\\.\\d+\\.\\d+)\"").matcher(sb.toString());
+            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\"data\":\"(\\d+\\.\\d+\\.\\d+\\.\\d+)\"").matcher(sb.toString());
             if (matcher.find()) {
                 return matcher.group(1);
             }

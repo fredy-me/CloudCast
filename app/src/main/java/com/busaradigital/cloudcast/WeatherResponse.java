@@ -1,7 +1,6 @@
 package com.busaradigital.cloudcast;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class WeatherResponse {
@@ -15,16 +14,18 @@ public class WeatherResponse {
     @SerializedName("forecast")
     private Forecast forecast;
 
+    public Location getLocation() { return location; }
+    public Current getCurrent() { return current; }
     public Forecast getForecast() { return forecast; }
 
     public String getTemperature() {
         if (current == null) return "--";
-        return String.format("%.0f\u00B0C", current.tempC);
+        return String.format(java.util.Locale.US, "%.0f\u00B0C", current.tempC);
     }
 
     public String getFeelsLike() {
         if (current == null) return "--";
-        return String.format("%.0f\u00B0C", current.feelsLikeC);
+        return String.format(java.util.Locale.US, "%.0f\u00B0C", current.feelsLikeC);
     }
 
     public String getHumidity() {
@@ -40,7 +41,7 @@ public class WeatherResponse {
     public String getWeatherIconUrl() {
         if (current == null || current.condition == null) return "";
         String icon = current.condition.icon;
-        if (icon.startsWith("//")) {
+        if (icon != null && icon.startsWith("//")) {
             return "https:" + icon;
         }
         return icon;

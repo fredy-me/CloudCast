@@ -32,6 +32,7 @@ public class WeatherHistoryActivity extends AppCompatActivity {
         historyManager = new HistoryManager(this, userManager.getEmail());
 
         loadHistory();
+        syncWithBackend();
 
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String selectedDate = String.format(java.util.Locale.US, "%d-%02d-%02d", year, month + 1, dayOfMonth);
@@ -39,6 +40,23 @@ public class WeatherHistoryActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+    }
+
+    private void syncWithBackend() {
+        int userId = userManager.getUserId();
+        if (userId != -1) {
+            historyManager.syncHistory(userId, new BackendApiService.ApiCallback<List<WeatherRecord>>() {
+                @Override
+                public void onSuccess(List<WeatherRecord> result) {
+                    loadHistory(); // Reload UI with synced data
+                }
+
+                @Override
+                public void onError(String error) {
+                    // Silently fail or show a minor toast
+                }
+            });
+        }
     }
 
     private void fetchHistoricalWeather(String date) {
@@ -71,7 +89,13 @@ public class WeatherHistoryActivity extends AppCompatActivity {
                     intent.putExtra(MainActivity.EXTRA_LOCATION, finalCity);
                     intent.putExtra(MainActivity.EXTRA_DATE, dayData.date);
                     intent.putExtra(MainActivity.EXTRA_WEATHER_DESC, dayData.day.condition.text);
-                    intent.putExtra(MainActivity.EXTRA_ICON_URL, "https:" + dayData.day.condition.icon);
+                    
+                    String iconUrl = dayData.day.condition.icon;
+                    if (iconUrl != null && iconUrl.startsWith("//")) {
+                        iconUrl = "https:" + iconUrl;
+                    }
+                    intent.putExtra(MainActivity.EXTRA_ICON_URL, iconUrl);
+
                     intent.putExtra(MainActivity.EXTRA_TEMPERATURE, String.format(java.util.Locale.US, "%.0f°C", dayData.day.avgTempC));
                     intent.putExtra(MainActivity.EXTRA_FEELS_LIKE, "--");
                     
